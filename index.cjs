@@ -14,6 +14,12 @@ app.use(express.json())
 app.use(express.urlencoded({extended: false}))
 app.use(layouts)
 
+// Ensure cookies are only sent over HTTPS in production
+const isProduction = process.env.NODE_ENV === 'production';
+if (isProduction && process.env.USE_HTTP) {
+  console.error('ERROR: Application is running in production mode without HTTPS. Session cookies will not be secure!');
+  throw new Error('Refusing to start server in production mode without HTTPS. Set up HTTPS and remove USE_HTTP.');
+}
 app.use(session({
   name: process.env.COOKIE_NAME || 'ttcloud-cookie-session',
   secret: process.env.COOKIE_SECRET,
@@ -21,7 +27,9 @@ app.use(session({
   saveUninitialized: false,
   cookie:{
     maxAge: 24 * 60 * 60 * 1000,
-    secure: process.env.NODE_ENV === 'production' || false,
+    secure: isProduction, // Always secure in production
+    httpOnly: true,
+    sameSite: 'lax',
     domain: process.env.COOKIE_DOMAIN || 'localhost'
   }
 }))
