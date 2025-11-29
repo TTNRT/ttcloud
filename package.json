@@ -18,6 +18,6 @@
     "express-session": "^1.18.2",
     "sequelize": "^6.37.7",
     "sqlite3": "^5.1.7",
-    "validator": "^13.15.20"
+    "validator": "^13.15.23"
   }
 }
