@@ -1,0 +1,14 @@
+{
+  "include": ["src/**/*"],
+  "exclude": ["node_modules"],
+  "compilerOptions": {
+    "module": "nodenext",
+    "target": "esnext",
+    "types": [
+      "@types/node"
+    ],
+    "skipLibCheck": true,
+    "noImplicitAny": false,
+    "moduleResolution": "nodenext",
+  }
+}

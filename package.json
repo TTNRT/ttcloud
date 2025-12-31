@@ -1,23 +1,33 @@
 {
   "name": "ttcloud",
   "version": "1.0.0",
+  "type": "module",
   "description": "A user-friendly cloud service for uploading and sharing files",
-  "main": "index.cjs",
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.cjs",
-    "dev": "nodemon index.cjs"
+    "start": "node .",
+    "dev": "nodemon ."
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "connect-session-sequelize": "^8.0.4",
     "ejs": "^3.1.10",
     "express": "^5.2.1",
     "express-ejs-layouts": "^2.5.1",
     "express-session": "^1.18.2",
+    "passport": "^0.7.0",
+    "passport-local": "^1.0.0",
     "sequelize": "^6.37.7",
     "sqlite3": "^5.1.7",
     "validator": "^13.15.26"
+  },
+  "devDependencies": {
+    "@types/node": "^25.0.3",
+    "esbuild": "^0.27.2",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3"
   }
 }
