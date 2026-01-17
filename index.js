@@ -1,11 +1,7 @@
 //@ts-check
 // Package imports
 import express from 'express'
-import expressEjsLayouts from 'express-ejs-layouts'
-import session from 'express-session'
 import { createServer } from 'node:http'
-import connectSessionSequelize from 'connect-session-sequelize';
-import { sequelize } from './handlers/database';
 import {scripts} from './handlers/build-assets'
 
 // Server routes
@@ -18,15 +14,6 @@ import page_routes from './routes/pages'
     const httpServer = createServer(server)
     const port = process.env.PORT || 8000
     const server_env = process.env.NODE_ENV
-    const cookie_name = process.env.COOKIE_NAME || 'ttcloud-cookie-session'
-    const cookie_secret = process.env.COOKIE_SECRET || 'session_key_please_change_me'
-    const cookie_domain = process.env.COOKIE_DOMAIN || 'localhost'
-    const session_store = connectSessionSequelize(session.Store)
-    const session_config = new session_store({
-        db: sequelize,
-        checkExpirationInterval: 15 * 60 * 1000,
-        expiration: 24 * 60 * 60 * 1000
-    })
 
     // Server settings
     server.set('layout', './layouts/website')
@@ -34,22 +21,6 @@ import page_routes from './routes/pages'
     server.use(express.static('public'))
     server.use(express.json())
     server.use(express.urlencoded({extended: false}))
-    server.use(expressEjsLayouts)
-    server.use(session({
-        name: cookie_name,
-        secret: cookie_secret,
-        store: session_config,
-        resave: false,
-        saveUninitialized: false,
-        proxy: server_env === 'production' ? true : false,
-        cookie: {
-            maxAge: 24 * 60 * 60 * 1000,
-            secure: server_env === 'production' ? true : false,
-            httpOnly: true,
-            sameSite: 'lax',
-            domain: cookie_domain
-        }
-    }))
     server.set('trust proxy', server_env === 'production' ? true : false) // Only use this if you are running the server behind a reverse proxy server!
 
     // Server routes
