@@ -26,6 +26,24 @@ Let's go over on what you need to have in your environment variables file. Make 
 - Cookie name
     - This is not a general requirement that you need to add, but it's only optional if you want to have a different name for your cookie session. To set a name for it, add the `COOKIE_NAME` variable to your configuration file and you can add anything you want to it. You should only have dashes for when you are adding spaces to your cookie name to prevent any errors that come up from the server!
     - If you don't have this set in your configuration file, it will only use the fallback one and nothing will change with it.
+- Enable Gravatar
+    - This is not a general requirement that you need to add, but it's only optional if you want to use the Gravatar API and use an avatar that you've uploaded to your account from their website! This requires you to have an email here and an account on their website, along with the email that you want to use here linked to your account as well!
+    - To enable it, add the `ENABLE_GRAVATAR` variable to your configuration file and set the value to `true`.
+- Server domain
+    - This is very similar to the Domain-based cookie setting, but this one helps out in creating URL's for some routes, such as the file upload route that is located in the API routes file. It is recommended that you set this to match with your cookie domain, expect it should have `https` at the start of the value.
+    - To set this, add the `SERVER_DOMAIN` variable to your configuration file and set the value to your cookie domain. If you are using SSL from a proxy server, you should consider adding `https://` at the start.
+
+Once you've added these configuration settings to your `.env` file, here's an example of what it will look like.
+
+```bash
+PORT="8000"
+NODE_ENV="production"
+COOKIE_DOMAIN="example.com"
+COOKIE_SECRET="this_is_not_a_secret"
+COOKIE_NAME="ttcloud-cookie-session"
+ENABLE_GRAVATAR="true"
+SERVER_DOMAIN="https://example.com"
+```
 
 ## Helpful resources
 If you need some help regarding the settings above or it's something else, check out these links below that might be helpful in your issue case.
@@ -41,5 +59,5 @@ We need your help on building this so that we can move it to it's pre-release. Y
 - [ ] Add the Docker files for building and running the server inside a container
 - [ ] Construct the website layout and add in the pages
 - [ ] Add the required API routes
-- [ ] Build the login system using the `passport` library
-- [ ] Add in the other required database models
+- [x] Build the login system using the `passport` library
+- [x] Add in the other required database models

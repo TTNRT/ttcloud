@@ -3,3 +3,4 @@ node_modules/
 
 # Hide the .env file
 .env
+database.db

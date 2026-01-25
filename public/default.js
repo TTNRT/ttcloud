@@ -1,0 +1,2 @@
+(()=>{})();
+//# sourceMappingURL=default.js.map

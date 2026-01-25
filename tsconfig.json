@@ -5,7 +5,12 @@
     "module": "nodenext",
     "target": "esnext",
     "types": [
-      "@types/node"
+      "@types/node",
+      "@types/bcrypt",
+      "express",
+      "@types/passport-local",
+      "@types/passport",
+      "@types/connect-flash"
     ],
     "skipLibCheck": true,
     "noImplicitAny": false,
