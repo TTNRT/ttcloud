@@ -29,22 +29,23 @@ import page_routes from './routes/pages.js'
     server.use(express.json())
     server.use(express.urlencoded({extended: false}))
     server.use(session({
-        name: cookie_config.name,
-        secret: cookie_config.secret,
+        name: process.env.COOKIE_NAME || 'ttcloud-cookie-session',
+        secret: process.env.COOKIE_SECRET || 'session_key_please_change_me',
         resave: false,
         saveUninitialized: false,
         store: new sessionStore({
             db: sequelize,
             checkExpirationInterval: 15 * 60 * 1000,
-            expiration: cookie_config.maxAge
+            expiration: 24 * 60 * 60 * 1000
         }),
-        proxy: cookie_config.proxy,
+        proxy: server_env === 'production' ? true : false,
         cookie: {
-            maxAge: cookie_config.maxAge,
-            domain: cookie_config.domain || undefined,
+            maxAge: 24 * 60 * 60 * 1000,
+            domain: process.env.COOKIE_DOMAIN || undefined,
             path: '/',
-            httpOnly: cookie_config.httpOnly,
-            sameSite: 'lax'
+            httpOnly: true,
+            sameSite: 'lax',
+            secure: server_env === 'production' ? true : false
         }
     }))
     server.use(flash())

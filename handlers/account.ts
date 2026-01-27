@@ -8,16 +8,6 @@ import type {Response, Request, NextFunction} from 'express'
 
 const server_env = process.env.NODE_ENV
 export const passport_auth = passport
-export const cookie_config = {
-    name: process.env.COOKIE_NAME || 'ttcloud-cookie-session',
-    secret: process.env.COOKIE_SECRET || 'session_key_please_change_me',
-    domain: process.env.COOKIE_DOMAIN,
-    proxy: server_env === 'production' ? true : false,
-    maxAge: 24 * 60 * 60 * 1000,
-    secure: server_env === 'production' ? true : false,
-    httpOnly: true,
-    sameSite: 'lax'
-}
 export const server_config = {
     enable_gravatar: process.env.ENABLE_GRAVATAR ? true : false,
     server_domain: process.env.SERVER_DOMAIN || 'http://localhost:8000'
