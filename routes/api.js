@@ -3,11 +3,33 @@
 import express from 'express'
 import multer from 'multer'
 import { Helpers, passport_auth, Database, server_config} from '../handlers/account.ts'
+import {rateLimit} from 'express-rate-limit'
 
 // Variables
-const router = express()
+const router = express.Router()
 const file_upload = multer({storage: multer.memoryStorage()}).single('file_data')
+const max_requests = rateLimit({
+    windowMs: 15 * 60 * 1000, // Should this be optional to change in the environment variables file?
+    limit: 15, // Should this be optional to change in the environment variables file?
+    standardHeaders: true,
+    legacyHeaders: false,
+    ipv6Subnet: 60
+})
 
+/**
+ * 
+ * @param {import('express').Request} req 
+ * @param {import('express').Response} res 
+ * @param {import('express').NextFunction} next 
+ */
+const limiter = function(req, res, next) {
+    const token_header = req.headers.authorization
+    if (token_header) {
+        return max_requests
+    } else if(req.user) {
+        return next()
+    }
+}
 
 // Routes
 router.post('/auth/:method', async function(req, res, next) {
@@ -79,15 +101,7 @@ router.post('/auth/:method', async function(req, res, next) {
         return res.status(500).json({message: errorMsg})
     }
 })
-router.post('/upload_file', file_upload, async function(req, res) {
-    const token_header = req.headers.authorization
-    if (token_header === undefined) {
-        throw new Error("You need to have your API token in order to use this route!")
-    }
-    const search_token = await Helpers.findAPIToken(token_header)
-    if (search_token instanceof Error) {
-        throw new Error(search_token.message)
-    }
+router.post('/upload_file', limiter, file_upload, async function(req, res, next) {
     try {
         const meta_data = {
             name: req.file?.originalname,
@@ -101,7 +115,7 @@ router.post('/upload_file', file_upload, async function(req, res) {
                 name: meta_data.name,
                 data: meta_data.buffer,
                 mimetype: meta_data.type,
-                user_id: search_token.id
+                user_id: req.body.user_id
             })
             return res.json({message: "File has been uploaded to the database!", url: `${server_config.server_domain}/upload/${meta_data.name}`})
         }
@@ -111,16 +125,8 @@ router.post('/upload_file', file_upload, async function(req, res) {
         return res.status(500).json({message: errorMsg})
     }
 })
-router.get('/users', async function(req, res) {
+router.get('/users', limiter, async function(req, res) {
     try {
-        const token_header = req.headers.authorization
-        if (token_header === undefined) {
-            throw new Error("You need to have your API token in order to use this route!")
-        }
-        const search_token = await Helpers.findAPIToken(token_header)
-        if (search_token instanceof Error) {
-            throw new Error(search_token.message)
-        }
         const grab_users = await Database.User.findAll({
             attributes: ['id', 'username', 'email', 'full_name', 'createdAt']
         })
@@ -131,16 +137,8 @@ router.get('/users', async function(req, res) {
         return res.status(500).json({message: errorMsg})
     }
 })
-router.get('/users/:id', async function(req, res) {
+router.get('/users/:id', limiter, async function(req, res) {
     try {
-        const token_header = req.headers.authorization
-        if (token_header === undefined) {
-            throw new Error("You need to have your API token in order to use this route!")
-        }
-        const search_token = await Helpers.findAPIToken(token_header)
-        if (search_token instanceof Error) {
-            throw new Error(search_token.message)
-        }
         const grab_user = await Database.User.findOne({
             attributes: ['id', 'username', 'email', 'full_name', 'createdAt'],
             where: {

@@ -4,3 +4,7 @@ node_modules/
 # Hide the .env file
 .env
 database.db
+
+# Hide the compiled website scripts
+public/default.js
+public/default.js.map

@@ -55,9 +55,6 @@ If you need some help regarding the settings above or it's something else, check
 We need your help on building this so that we can move it to it's pre-release. You can help us out by contributing to this project if you want! See our documentation website on how you can do that! Your help will be greatly appreciated.
 
 ## To-do list
-- [ ] Install the Bootstrap library for the website design
 - [ ] Add the Docker files for building and running the server inside a container
-- [ ] Construct the website layout and add in the pages
-- [ ] Add the required API routes
-- [x] Build the login system using the `passport` library
-- [x] Add in the other required database models
+- [ ] Construct the website layout
+- [ ] Use the `react-dom` library for the pages (suggestion)

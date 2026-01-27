@@ -59,6 +59,11 @@ import page_routes from './routes/pages.js'
         res.locals.originURL = encodeURIComponent(req.originalUrl)
         return next()
     })
+    server.use('/fonts/bootstrap-icons.woff', express.static('node_modules/bootstrap-icons/font/fonts/bootstrap-icons.woff'))
+    server.use('/fonts/bootstrap-icons.woff2', express.static('node_modules/bootstrap-icons/font/fonts/bootstrap-icons.woff2'))
+    server.use('/bootstrap.js', express.static('node_modules/bootstrap/dist/js/bootstrap.bundle.js'))
+    server.use('/bootstrap.css', express.static('node_modules/bootstrap/dist/css/bootstrap.css'))
+    server.use('/bootstrap-icons.css', express.static('node_modules/bootstrap-icons/font/bootstrap-icons.css'))
     server.use(page_routes)
     server.use('/api', api_routes)
 
