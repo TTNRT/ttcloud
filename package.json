@@ -33,7 +33,7 @@
     "passport": "^0.7.0",
     "passport-local": "^1.0.0",
     "sequelize": "^6.37.7",
-    "sqlite3": "^5.0.2",
+    "sqlite3": "^5.1.7",
     "validator": "^13.15.26"
   },
   "devDependencies": {
@@ -49,5 +49,8 @@
     "esbuild": "^0.27.2",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3"
+  },
+  "overrides": {
+    "tar": "^7.5.6"
   }
 }
